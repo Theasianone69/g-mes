@@ -34,15 +34,17 @@
             -webkit-text-fill-color: transparent;
         }
 
-        /* --- Search Bar --- */
+        /* --- Search & Random Container --- */
         .search-container {
             width: 90%;
             max-width: 600px;
             margin-bottom: 40px;
+            display: flex;
+            gap: 10px;
         }
 
         #gameSearch {
-            width: 100%;
+            flex-grow: 1;
             padding: 15px 25px;
             border-radius: 30px;
             border: 2px solid rgba(79, 172, 254, 0.3);
@@ -51,13 +53,26 @@
             font-size: 16px;
             outline: none;
             transition: 0.3s;
-            text-align: center;
         }
 
         #gameSearch:focus {
             border-color: #4facfe;
             box-shadow: 0 0 15px rgba(79, 172, 254, 0.4);
         }
+
+        .random-btn {
+            background: linear-gradient(135deg, #7928ca, #ff0080);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0 20px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            white-space: nowrap;
+        }
+
+        .random-btn:hover { transform: scale(1.05); filter: brightness(1.2); }
 
         /* --- Grid --- */
         .request-grid {
@@ -103,11 +118,9 @@
             text-transform: uppercase;
             font-size: 13px;
             transition: 0.2s;
-            text-decoration: none;
         }
 
         .btn:hover { background: #00f2fe; transform: scale(1.05); }
-        .form-card { background: rgba(79, 172, 254, 0.15); border: 2px dashed #4facfe; }
 
         /* --- MODAL STYLES --- */
         #modal-overlay {
@@ -150,7 +163,7 @@
 
     <div id="modal-overlay">
         <div class="modal">
-            <h2 id="modal-title" style="color:white; margin-bottom:15px;">Launch Game</h2>
+            <h2 id="modal-title" style="color:white; margin-bottom:15px;">Launch</h2>
             <button class="modal-btn btn-blank" id="choice-blank">About:Blank (Cloak)</button>
             <button class="modal-btn btn-blob" id="choice-blob">Blob URL (Shielded)</button>
             <button class="modal-btn" style="background:#333; color:white;" onclick="closeModal()">Cancel</button>
@@ -161,68 +174,18 @@
 
     <div class="search-container">
         <input type="text" id="gameSearch" placeholder="Search for a game..." onkeyup="filterGames()">
+        <button class="random-btn" onclick="randomGame()">Random 🎲</button>
     </div>
 
     <div class="request-grid" id="gameGrid">
-        <div class="card form-card">
-            <h3>Request a Game</h3>
-            <a href="https://forms.gle/xhWTy62fK1YqxNQA6" target="_blank" class="btn">Open Form</a>
-        </div> 
-
-        <div class="card">
-            <h3>Bloxd.io</h3>
-            <button class="btn" onclick="openChoice('Bloxd', 'https://geometry.com.de/')">Play Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Geometry Dash Lite</h3>
-            <button class="btn" onclick="openChoice('Geometry Dash Lite', 'https://gdl-7qv.pages.dev')">Play Now</button>
-        </div>
-
-        <div class="card">
-            <h3>UBG 1</h3>
-            <button class="btn" onclick="openChoice('UBG 1', 'https://ubg01.gitlab.io/')">Play Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Five Nights at Epstein's</h3>
-            <button class="btn" onclick="openChoice('FNAE', 'https://fivenightsatepsteins-9i9.pages.dev')">Play Now</button>
-        </div>
-       
-        <div class="card">
-            <h3>Ultimate Emulator</h3>
-            <button class="btn" onclick="openChoice('Emulator', 'https://archive.org/details/consolelivingroom')">Play Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Ultrakill</h3>
-            <button class="btn" onclick="openChoice('Ultrakill', 'https://ultrakill.pages.dev')">Play Now</button>
-        </div>
-       
-        <div class="card">
-            <h3>Mindustry</h3>
-            <button class="btn" onclick="openChoice('Mindustry', 'https://mindustryclassicmirror.pages.dev')">Play Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Drive Mad</h3>
-            <button class="btn" onclick="openChoice('Drive Mad', 'https://drive-mad-327.pages.dev')">Play Now</button>
-        </div>
-
-        <div class="card">
-            <h3>N-Gon</h3>
-            <button class="btn" onclick="openChoice('N-Gon', 'https://n-gon-b1e.pages.dev')">Play Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Gn-Math</h3>
-            <button class="btn" onclick="openChoice('Gn-math', 'https://gn-math-5pb.pages.dev')">Play Now</button>
-        </div>
-
-        <div class="card">
-            <h3>Buckshot Roulette</h3>
-            <button class="btn" onclick="openChoice('Buckshot Roulette', 'https://buckshot-roulette-7pp.pages.dev')">Play Now</button>
-        </div>
+        <div class="card" data-url="https://geometry.com.de/"><h3>Bloxd.io</h3><button class="btn" onclick="openChoice('Bloxd', 'https://geometry.com.de/')">Play</button></div>
+        <div class="card" data-url="https://gdl-7qv.pages.dev"><h3>Geometry Dash</h3><button class="btn" onclick="openChoice('GD Lite', 'https://gdl-7qv.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://ubg01.gitlab.io/"><h3>UBG 1</h3><button class="btn" onclick="openChoice('UBG 1', 'https://ubg01.gitlab.io/')">Play</button></div>
+        <div class="card" data-url="https://fivenightsatepsteins-9i9.pages.dev"><h3>FNAE</h3><button class="btn" onclick="openChoice('FNAE', 'https://fivenightsatepsteins-9i9.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://ultrakill.pages.dev"><h3>Ultrakill</h3><button class="btn" onclick="openChoice('Ultrakill', 'https://ultrakill.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://mindustryclassicmirror.pages.dev"><h3>Mindustry</h3><button class="btn" onclick="openChoice('Mindustry', 'https://mindustryclassicmirror.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://drive-mad-327.pages.dev"><h3>Drive Mad</h3><button class="btn" onclick="openChoice('Drive Mad', 'https://drive-mad-327.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://buckshot-roulette-7pp.pages.dev"><h3>Buckshot Roulette</h3><button class="btn" onclick="openChoice('Buckshot Roulette', 'https://buckshot-roulette-7pp.pages.dev')">Play</button></div>
     </div>
 
     <script>
@@ -232,28 +195,33 @@
         function filterGames() {
             let input = document.getElementById('gameSearch').value.toLowerCase();
             let cards = document.getElementsByClassName('card');
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].getElementsByTagName('h3')[0].innerText.toLowerCase();
-                if (title.includes(input)) { cards[i].classList.remove('hidden'); } 
-                else { cards[i].classList.add('hidden'); }
+            for (let card of cards) {
+                let title = card.querySelector('h3').innerText.toLowerCase();
+                card.classList.toggle('hidden', !title.includes(input));
             }
         }
 
+        function randomGame() {
+            let cards = Array.from(document.querySelectorAll('.card:not(.form-card)'));
+            let randomCard = cards[Math.floor(Math.random() * cards.length)];
+            let name = randomCard.querySelector('h3').innerText;
+            let url = randomCard.getAttribute('data-url');
+            openChoice(name, url);
+        }
+
         function openChoice(name, url) {
-            currentName = name;
-            currentUrl = url;
+            currentName = name; currentUrl = url;
             document.getElementById('modal-title').innerText = name;
             document.getElementById('modal-overlay').style.display = 'flex';
         }
 
-        function closeModal() {
-            document.getElementById('modal-overlay').style.display = 'none';
-        }
+        function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
 
-        document.getElementById('choice-blank').onclick = () => { launch(currentUrl, 'blank'); closeModal(); };
-        document.getElementById('choice-blob').onclick = () => { launch(currentUrl, 'blob'); closeModal(); };
+        document.getElementById('choice-blank').onclick = () => launch(currentUrl, 'blank');
+        document.getElementById('choice-blob').onclick = () => launch(currentUrl, 'blob');
 
         function launch(url, mode) {
+            closeModal();
             const content = `
                 <!DOCTYPE html>
                 <html>
@@ -262,40 +230,33 @@
                     <style>
                         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; transition: filter 0.3s; }
                         iframe { border: none; width: 100%; height: 100%; position: absolute; z-index: 2; }
-                        #shield-input { position: absolute; opacity: 0; z-index: 1; }
+                        #shield { position: absolute; opacity: 0; }
                         .ghost { filter: blur(50px) grayscale(1); }
                     </style>
                 </head>
                 <body>
-                    <input type="text" id="shield-input">
+                    <input type="text" id="shield" autofocus>
                     <iframe src="${url}"></iframe>
                     <script>
-                        document.getElementById('shield-input').focus();
                         window.onbeforeunload = (e) => { e.preventDefault(); e.returnValue = ''; return ''; };
-                        setInterval(() => { if(!window.onbeforeunload) window.onbeforeunload = (e) => { e.preventDefault(); e.returnValue = ''; return ''; }; }, 200);
-                        
                         window.addEventListener('keydown', (e) => {
                             if (e.key.toLowerCase() === 'q') { window.onbeforeunload = null; window.location.replace('https://classroom.google.com'); }
-                            if (e.key.toLowerCase() === 'g') { document.body.classList.toggle('ghost'); }
+                            if (e.key.toLowerCase() === 'g') document.body.classList.toggle('ghost');
                         });
                     <\/script>
                 </body>
                 </html>`;
 
+            const win = window.open('about:blank', '_blank');
             if (mode === 'blob') {
                 const blobUrl = URL.createObjectURL(new Blob([content], { type: 'text/html' }));
-                const win = window.open('about:blank', '_blank');
-                if (win) win.location.href = blobUrl;
+                win.location.href = blobUrl;
             } else {
-                const win = window.open('about:blank', '_blank');
-                if (win) { win.document.write(content); win.document.close(); }
+                win.document.write(content); win.document.close();
             }
         }
 
-        // Main Page Panic Key
-        window.addEventListener('keydown', (e) => {
-            if (e.key.toLowerCase() === 'q') window.location.href = 'https://classroom.google.com';
-        });
+        window.addEventListener('keydown', (e) => { if (e.key.toLowerCase() === 'q') window.location.href = 'https://classroom.google.com'; });
     </script>
 </body>
 </html>
