@@ -3,180 +3,67 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Requested Games</title>
+    <title>Google Docs - Genetics Essay Draft</title>
+    <link rel="icon" type="image/x-icon" href="https://ssl.gstatic.com/docs/doclist/images/infinite_growth_customer_emails.png">
     <style>
-        /* --- Setup --- */
         html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
+            height: 100%; margin: 0; padding: 0;
             font-family: 'Inter', sans-serif;
-            background: #000;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            background: #000; color: white;
+            display: flex; flex-direction: column; align-items: center;
         }
-
-        body {
-            background: radial-gradient(circle at top, #1a1a1a 0%, #000 100%);
-        }
-
-        /* --- Header --- */
+        body { background: radial-gradient(circle at top, #1a1a1a 0%, #000 100%); }
         .main-header {
-            font-size: 42px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            margin: 40px 0 10px 0;
-            text-transform: uppercase;
+            font-size: 42px; font-weight: 900; letter-spacing: 2px;
+            margin: 40px 0 10px 0; text-transform: uppercase;
             background: linear-gradient(#4facfe, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-
-        /* --- Search & Random Container --- */
-        .search-container {
-            width: 90%;
-            max-width: 600px;
-            margin-bottom: 40px;
-            display: flex;
-            gap: 10px;
-        }
-
+        .search-container { width: 90%; max-width: 600px; margin-bottom: 40px; display: flex; gap: 10px; }
         #gameSearch {
-            flex-grow: 1;
-            padding: 15px 25px;
-            border-radius: 30px;
+            flex-grow: 1; padding: 15px 25px; border-radius: 30px;
             border: 2px solid rgba(79, 172, 254, 0.3);
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            font-size: 16px;
-            outline: none;
-            transition: 0.3s;
-            text-align: center;
+            background: rgba(255, 255, 255, 0.05); color: white;
+            font-size: 16px; outline: none; text-align: center;
         }
-
-        #gameSearch:focus {
-            border-color: #4facfe;
-            box-shadow: 0 0 15px rgba(79, 172, 254, 0.4);
-            background: rgba(255, 255, 255, 0.1);
-        }
-
         .random-btn {
             background: linear-gradient(135deg, #7928ca, #ff0080);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 0 25px;
-            font-weight: 800;
-            cursor: pointer;
-            transition: 0.3s;
-            white-space: nowrap;
-            text-transform: uppercase;
-            font-size: 14px;
+            color: white; border: none; border-radius: 30px;
+            padding: 0 25px; font-weight: 800; cursor: pointer;
+            text-transform: uppercase; font-size: 14px;
         }
-
-        .random-btn:hover { transform: scale(1.05); filter: brightness(1.2); }
-
-        /* --- Grid --- */
         .request-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-            width: 90%;
-            max-width: 1000px;
-            padding-bottom: 50px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px; width: 90%; max-width: 1000px; padding-bottom: 50px;
         }
-
         .card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(79, 172, 254, 0.3);
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-            transition: all 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            min-height: 140px;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(79, 172, 254, 0.3);
+            border-radius: 12px; padding: 25px; text-align: center;
+            transition: 0.3s; display: flex; flex-direction: column; justify-content: center; min-height: 140px;
         }
-
-        .hidden { display: none !important; }
-
-        .card:hover {
-            transform: translateY(-5px);
-            background: rgba(79, 172, 254, 0.1);
-            border-color: #4facfe;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-        }
-
-        .card h3 { margin: 0 0 15px 0; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; }
-
+        .card:hover { transform: translateY(-5px); background: rgba(79, 172, 254, 0.1); border-color: #4facfe; }
         .btn {
-            background: #4facfe;
-            color: #000;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 800;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-size: 13px;
-            transition: 0.2s;
+            background: #4facfe; color: #000; border: none;
+            padding: 12px 20px; border-radius: 8px; font-weight: 800;
+            cursor: pointer; text-transform: uppercase; font-size: 13px;
         }
-
-        .btn:hover { background: #00f2fe; transform: scale(1.05); }
-        .form-card { background: rgba(79, 172, 254, 0.15); border: 2px dashed #4facfe; }
-
-        /* --- MODAL STYLES --- */
         #modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(15px);
-            z-index: 10000;
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(15px);
+            z-index: 10000; align-items: center; justify-content: center;
         }
-
-        .modal {
-            background: #111;
-            padding: 30px;
-            border-radius: 20px;
-            border: 2px solid #4facfe;
-            text-align: center;
-            width: 380px;
-        }
-
-        .modal h2 { color: white; margin-bottom: 20px; font-size: 1.5rem; }
-
-        .modal-btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 800;
-            text-transform: uppercase;
-            transition: 0.2s;
-        }
-
-        .btn-blank { background: #4facfe; color: black; }
-        .btn-blob { background: #ff416c; color: white; }
+        .modal { background: #111; padding: 30px; border-radius: 20px; border: 2px solid #4facfe; text-align: center; width: 320px; }
+        .modal-btn { display: block; width: 100%; padding: 15px; margin: 10px 0; border: none; border-radius: 10px; cursor: pointer; font-weight: 800; text-transform: uppercase; }
         .btn-cancel { background: #333; color: white; margin-top: 15px; }
-        .modal-btn:hover { transform: scale(1.05); filter: brightness(1.1); }
     </style>
 </head>
 <body>
 
     <div id="modal-overlay">
         <div class="modal">
-            <h2 id="modal-title">Select Launch Method</h2>
-            <button class="modal-btn btn-blank" id="choice-blank">About:Blank (Cloak)</button>
-            <button class="modal-btn btn-blob" id="choice-blob">Blob URL (Shielded)</button>
+            <h2 id="modal-title">Launch Game</h2>
+            <button class="modal-btn" style="background:#4facfe;" id="choice-blank">About:Blank (Cloak)</button>
+            <button class="modal-btn" style="background:#ff416c; color:white;" id="choice-blob">Blob URL (Shield)</button>
             <button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
         </div>
     </div>
@@ -189,160 +76,95 @@
     </div>
 
     <div class="request-grid" id="gameGrid">
-        <div class="card form-card">
-            <h3>Request a Game</h3>
-            <a href="https://forms.gle/xhWTy62fK1YqxNQA6" target="_blank" class="btn" style="text-decoration:none; text-align:center;">Open Form</a>
-        </div> 
-
-        <div class="card" data-url="https://geometry.com.de/">
-            <h3>Bloxd.io</h3>
-            <button class="btn" onclick="openChoice('Bloxd', 'https://geometry.com.de/')">Play Now</button>
-        </div>
-
-        <div class="card" data-url="https://gdl-7qv.pages.dev">
-            <h3>Geometry Dash Lite</h3>
-            <button class="btn" onclick="openChoice('GD Lite', 'https://gdl-7qv.pages.dev')">Play Now</button>
-        </div>
-
-        <div class="card" data-url="https://ubg01.gitlab.io/">
-            <h3>UBG 1</h3>
-            <button class="btn" onclick="openChoice('UBG 1', 'https://ubg01.gitlab.io/')">Play Now</button>
-        </div>
-
-        <div class="card" data-url="https://fivenightsatepsteins-9i9.pages.dev">
-            <h3>Five Nights at Epstein's</h3>
-            <button class="btn" onclick="openChoice('FNAE', 'https://fivenightsatepsteins-9i9.pages.dev')">Play Now</button>
-        </div>
-       
-        <div class="card" data-url="https://archive.org/details/consolelivingroom">
-            <h3>Ultimate Emulator</h3>
-            <button class="btn" onclick="openChoice('Emulator', 'https://archive.org/details/consolelivingroom')">Play Now</button>
-        </div>
-
-        <div class="card" data-url="https://ultrakill.pages.dev">
-            <h3>Ultrakill</h3>
-            <button class="btn" onclick="openChoice('Ultrakill', 'https://ultrakill.pages.dev')">Play Now</button>
-        </div>
-       
-        <div class="card" data-url="https://mindustryclassicmirror.pages.dev">
-            <h3>Mindustry</h3>
-            <button class="btn" onclick="openChoice('Mindustry', 'https://mindustryclassicmirror.pages.dev')">Play Now</button>
-        </div>
-
-        <div class="card" data-url="https://drive-mad-327.pages.dev">
-            <h3>Drive Mad</h3>
-            <button class="btn" onclick="openChoice('Drive Mad', 'https://drive-mad-327.pages.dev')">Play Now</button>
-        </div>
-
-        <div class="card" data-url="https://n-gon-b1e.pages.dev">
-            <h3>N-Gon</h3>
-            <button class="btn" onclick="openChoice('N-Gon', 'https://n-gon-b1e.pages.dev')">Play Now</button>
-        </div>
-
-        <div class="card" data-url="https://gn-math-5pb.pages.dev">
-            <h3>Gn-Math (Website)</h3>
-            <button class="btn" onclick="openChoice('Gn-math', 'https://gn-math-5pb.pages.dev')">Play Now</button>
-        </div>
-
-        <div class="card" data-url="https://buckshot-roulette-7pp.pages.dev">
-            <h3>Buckshot Roulette</h3>
-            <button class="btn" onclick="openChoice('Buckshot Roulette', 'https://buckshot-roulette-7pp.pages.dev')">Play Now</button>
-        </div>
+        <div class="card" data-url="https://geometry.com.de/"><h3>Bloxd.io</h3><button class="btn" onclick="openChoice('Bloxd', 'https://geometry.com.de/')">Play</button></div>
+        <div class="card" data-url="https://gdl-7qv.pages.dev"><h3>Geometry Dash Lite</h3><button class="btn" onclick="openChoice('GD Lite', 'https://gdl-7qv.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://ubg01.gitlab.io/"><h3>UBG 1</h3><button class="btn" onclick="openChoice('UBG 1', 'https://ubg01.gitlab.io/')">Play</button></div>
+        <div class="card" data-url="https://fivenightsatepsteins-9i9.pages.dev"><h3>FNAE</h3><button class="btn" onclick="openChoice('FNAE', 'https://fivenightsatepsteins-9i9.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://archive.org/details/consolelivingroom"><h3>Ultimate Emulator</h3><button class="btn" onclick="openChoice('Emulator', 'https://archive.org/details/consolelivingroom')">Play</button></div>
+        <div class="card" data-url="https://ultrakill.pages.dev"><h3>Ultrakill</h3><button class="btn" onclick="openChoice('Ultrakill', 'https://ultrakill.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://mindustryclassicmirror.pages.dev"><h3>Mindustry</h3><button class="btn" onclick="openChoice('Mindustry', 'https://mindustryclassicmirror.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://drive-mad-327.pages.dev"><h3>Drive Mad</h3><button class="btn" onclick="openChoice('Drive Mad', 'https://drive-mad-327.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://n-gon-b1e.pages.dev"><h3>N-Gon</h3><button class="btn" onclick="openChoice('N-Gon', 'https://n-gon-b1e.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://gn-math-5pb.pages.dev"><h3>Gn-Math (Website)</h3><button class="btn" onclick="openChoice('Gn-math', 'https://gn-math-5pb.pages.dev')">Play</button></div>
+        <div class="card" data-url="https://buckshot-roulette-7pp.pages.dev"><h3>Buckshot Roulette</h3><button class="btn" onclick="openChoice('Buckshot Roulette', 'https://buckshot-roulette-7pp.pages.dev')">Play</button></div>
+        <div class="card form-card"><h3>Request a Game</h3><a href="https://forms.gle/xhWTy62fK1YqxNQA6" target="_blank" class="btn" style="text-decoration:none;">Open Form</a></div> 
     </div>
 
     <script>
         let currentUrl = '';
-        let currentName = '';
 
-        // SEARCH FUNCTIONALITY
         function filterGames() {
             let input = document.getElementById('gameSearch').value.toLowerCase();
-            let cards = document.getElementsByClassName('card');
-            for (let i = 0; i < cards.length; i++) {
-                let title = cards[i].querySelector('h3').innerText.toLowerCase();
-                cards[i].classList.toggle('hidden', !title.includes(input));
-            }
+            document.querySelectorAll('.card:not(.form-card)').forEach(card => {
+                let title = card.querySelector('h3').innerText.toLowerCase();
+                card.style.display = title.includes(input) ? "flex" : "none";
+            });
         }
 
-        // RANDOM GAME FUNCTIONALITY
         function randomGame() {
             let cards = Array.from(document.querySelectorAll('.card:not(.form-card)'));
             let randomCard = cards[Math.floor(Math.random() * cards.length)];
-            let name = randomCard.querySelector('h3').innerText;
-            let url = randomCard.getAttribute('data-url');
-            openChoice(name, url);
+            openChoice(randomCard.querySelector('h3').innerText, randomCard.getAttribute('data-url'));
         }
 
-        // MODAL HANDLERS
         function openChoice(name, url) {
-            currentName = name;
             currentUrl = url;
             document.getElementById('modal-title').innerText = "Launch " + name;
             document.getElementById('modal-overlay').style.display = 'flex';
         }
 
-        function closeModal() {
-            document.getElementById('modal-overlay').style.display = 'none';
-        }
+        function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
 
-        document.getElementById('choice-blank').onclick = () => { launch(currentUrl, 'blank'); closeModal(); };
-        document.getElementById('choice-blob').onclick = () => { launch(currentUrl, 'blob'); closeModal(); };
+        document.getElementById('choice-blank').onclick = () => launch(currentUrl, 'blank');
+        document.getElementById('choice-blob').onclick = () => launch(currentUrl, 'blob');
 
-        // CORE LAUNCHER
         function launch(url, mode) {
+            closeModal();
             const content = `
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <title>about:blank</title>
+                    <title>Google Classroom</title>
+                    <link rel="icon" href="https://ssl.gstatic.com/classroom/favicon.png">
                     <style>
-                        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; transition: filter 0.3s; }
-                        iframe { border: none; width: 100%; height: 100%; position: absolute; z-index: 2; }
-                        #shield-input { position: absolute; opacity: 0; z-index: 1; }
-                        .ghost { filter: blur(50px) grayscale(1); }
+                        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; }
+                        iframe { border: none; width: 100%; height: 100%; position: absolute; z-index: 1; }
+                        #ghost-shield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; display: none; z-index: 99999; filter: blur(100px); opacity: 0.9; }
                     </style>
                 </head>
                 <body>
-                    <input type="text" id="shield-input" autofocus>
-                    <iframe src="${url}"></iframe>
+                    <div id="ghost-shield"></div>
+                    <iframe id="game-frame" src="${url}"></iframe>
                     <script>
-                        // ARM SHIELD
-                        window.onbeforeunload = (e) => { e.preventDefault(); e.returnValue = 'SHIELD_ACTIVE'; return 'SHIELD_ACTIVE'; };
+                        const shield = document.getElementById('ghost-shield');
+                        window.onbeforeunload = () => { return " "; };
                         
-                        // RE-ARM LOOP
-                        setInterval(() => {
-                            if(!window.onbeforeunload) window.onbeforeunload = (e) => { e.preventDefault(); e.returnValue = ''; return ''; };
-                        }, 200);
-
-                        // KEYS: Q = PANIC, G = GHOST
                         window.addEventListener('keydown', (e) => {
                             if (e.key.toLowerCase() === 'q') { 
                                 window.onbeforeunload = null; 
-                                window.location.replace('https://classroom.google.com'); 
+                                window.open('https://classroom.google.com', '_blank'); // NEW TAB
+                                window.location.replace('https://drive.google.com/drive/search?q=Genetics%20Essay'); // HIDE CURRENT TAB
                             }
-                            if (e.key.toLowerCase() === 'g') { 
-                                document.body.classList.toggle('ghost'); 
+                            if (e.key.toLowerCase() === 'g') {
+                                shield.style.display = (shield.style.display === 'block') ? 'none' : 'block';
                             }
                         });
+                        // Keep focus on parent so keys work
+                        setInterval(() => { window.focus(); }, 500);
                     <\/script>
                 </body>
                 </html>`;
 
+            const win = window.open('about:blank', '_blank');
             if (mode === 'blob') {
                 const blobUrl = URL.createObjectURL(new Blob([content], { type: 'text/html' }));
-                const win = window.open('about:blank', '_blank');
-                if (win) win.location.href = blobUrl;
+                win.location.href = blobUrl;
             } else {
-                const win = window.open('about:blank', '_blank');
-                if (win) {
-                    win.document.open();
-                    win.document.write(content);
-                    win.document.close();
-                }
+                win.document.write(content); win.document.close();
             }
         }
 
-        // Global Panic Key
+        // Global Panic key for the main menu
         window.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === 'q') window.location.href = 'https://classroom.google.com';
         });
