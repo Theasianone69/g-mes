@@ -62,8 +62,8 @@
     <div id="modal-overlay">
         <div class="modal">
             <h2 id="modal-title">Launch Game</h2>
-            <button class="modal-btn" style="background:#4facfe;" id="choice-blank">About:Blank (Cloak)</button>
-            <button class="modal-btn" style="background:#ff416c; color:white;" id="choice-blob">Blob URL (Shield)</button>
+            <button class="modal-btn" style="background:#4facfe;" id="choice-blank">About:Blank (No-History )</button>
+            <button class="modal-btn" style="background:#ff416c; color:white;" id="choice-blob">Blob URL (Clocaked & Reloadable)</button>
             <button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
         </div>
     </div>
@@ -137,19 +137,17 @@
                     <iframe id="game-frame" src="${url}"></iframe>
                     <script>
                         const shield = document.getElementById('ghost-shield');
-                        window.onbeforeunload = () => { return " "; };
                         
                         window.addEventListener('keydown', (e) => {
                             if (e.key.toLowerCase() === 'q') { 
-                                window.onbeforeunload = null; 
-                                window.open('https://classroom.google.com', '_blank'); // NEW TAB
-                                window.location.replace('https://drive.google.com/drive/search?q=Genetics%20Essay'); // HIDE CURRENT TAB
+                                // Redirect current tab to hide evidence
+                                window.location.replace('https://drive.google.com/drive/search?q=Genetics%20Essay');
                             }
                             if (e.key.toLowerCase() === 'g') {
                                 shield.style.display = (shield.style.display === 'block') ? 'none' : 'block';
                             }
                         });
-                        // Keep focus on parent so keys work
+                        // Keep focus for key listeners
                         setInterval(() => { window.focus(); }, 500);
                     <\/script>
                 </body>
@@ -160,11 +158,11 @@
                 const blobUrl = URL.createObjectURL(new Blob([content], { type: 'text/html' }));
                 win.location.href = blobUrl;
             } else {
-                win.document.write(content); win.document.close();
+                win.document.write(content); 
+                win.document.close();
             }
         }
 
-        // Global Panic key for the main menu
         window.addEventListener('keydown', (e) => {
             if (e.key.toLowerCase() === 'q') window.location.href = 'https://classroom.google.com';
         });
