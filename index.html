@@ -3,256 +3,331 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>testing</title>
-    
-    <link rel="icon" type="image/png" href="https://schoolissuperfun.github.io/logo.png">
-
+    <title>Requested Games</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { height: 100%; width: 100%; background: #000; font-family: 'Inter', sans-serif; overflow: hidden; }
-
-        /* --- PANIC BANNER --- */
-        .panic-banner {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
-            color: rgba(255, 255, 255, 0.6);
-            text-align: center;
-            padding: 5px 0;
-            font-size: 0.9vw;
-            font-weight: 600;
-            z-index: 9999;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            pointer-events: none;
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr 2fr; 
-            height: 100vh;
-            width: 100vw;
-            gap: 15px; 
-            padding: 40px 15px 15px 15px;
-        }
-
-        .nav-btn {
-            position: relative;
+        /* --- Setup --- */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-weight: 900;
+        }
+
+        body {
+            background: radial-gradient(circle at top, #1a1a1a 0%, #000 100%);
+        }
+
+        /* --- Header Navigation --- */
+        .header-nav {
+            width: 90%;
+            max-width: 1000px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .back-home-link {
+            text-decoration: none;
+            color: #4facfe;
+            font-weight: 800;
+            font-size: 14px;
             text-transform: uppercase;
+            padding: 8px 15px;
+            border: 1px solid #4facfe;
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+
+        .back-home-link:hover {
+            background: #4facfe;
+            color: #000;
+        }
+
+        .main-header {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(#4facfe, #00f2fe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0;
+        }
+
+        /* --- Search Bar & Random Button --- */
+        .search-container {
+            width: 90%;
+            max-width: 700px;
+            margin: 30px 0 40px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        #gameSearch {
+            flex-grow: 1;
+            padding: 15px 25px;
+            border-radius: 30px;
+            border: 2px solid rgba(79, 172, 254, 0.3);
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        #gameSearch:focus {
+            border-color: #4facfe;
+            box-shadow: 0 0 15px rgba(79, 172, 254, 0.4);
+        }
+
+        .random-btn {
+            background: linear-gradient(135deg, #7928ca, #ff0080);
             color: white;
             border: none;
+            border-radius: 30px;
+            padding: 0 25px;
+            font-weight: 800;
             cursor: pointer;
-            transition: transform 0.3s ease, filter 0.3s ease;
-            text-decoration: none;
-            outline: none;
-            overflow: hidden;
-            font-size: 2.5vw; 
+            text-transform: uppercase;
+            font-size: 14px;
+            transition: 0.3s;
         }
 
-        .games-main-btn {
-            grid-column: 1;
-            grid-row: 1;
-            background: linear-gradient(135deg, #007cf0, #00dfd8);
-            border-radius: 40px 15px 10px 15px;
+        /* --- Grid --- */
+        .request-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+            width: 90%;
+            max-width: 1000px;
+            padding-bottom: 50px;
         }
 
-        .games-req-btn {
-            grid-column: 1;
-            grid-row: 2;
-            background: linear-gradient(225deg, #4facfe, #00f2fe);
-            border-radius: 10px 15px 40px 15px;
-        }
-
-        .proxies-btn {
-            grid-column: 2;
-            grid-row: 1 / span 2;
-            background: linear-gradient(225deg, #ff4b2b, #ff416c);
-            border-radius: 15px 40px 15px 40px;
-            font-size: 3.5vw;
-        }
-
-        .tools-btn {
-            grid-column: 1;
-            grid-row: 3;
-            background: linear-gradient(135deg, #7928ca, #ff0080);
-            border-radius: 40px 15px 40px 15px;
-        }
-
-        .news-btn {
-            grid-column: 2;
-            grid-row: 3;
-            background: #111; 
-            border: 2px solid #333;
-            border-radius: 15px 40px 15px 40px;
-            padding: 20px;
-            cursor: default;
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(79, 172, 254, 0.3);
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            overflow: hidden;
+            justify-content: center;
+            min-height: 140px;
         }
 
-        .news-header {
-            color: #4facfe;
-            font-size: 1.5vw;
-            margin-bottom: 8px;
-            font-weight: 900;
-            letter-spacing: 1px;
-            flex-shrink: 0;
-            background: #111;
-            text-align: left;
-            width: 100%;
+        .hidden { display: none !important; }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: rgba(79, 172, 254, 0.1);
+            border-color: #4facfe;
         }
 
-        .news-header a {
-            color: #ff416c;
-            text-decoration: underline;
+        .card h3 { margin: 0 0 15px 0; font-size: 18px; text-transform: uppercase; }
+
+        .btn {
+            background: #4facfe;
+            color: #000;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 800;
             cursor: pointer;
+            text-transform: uppercase;
+            font-size: 13px;
+            text-decoration: none;
         }
 
-        .news-scroll-area {
-            overflow-y: auto;
-            flex-grow: 1;
-            width: 100%;
+        /* --- Modal Pop-up --- */
+        #modalOverlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
         }
 
-        .news-text {
-            text-transform: none; 
-            font-weight: 400;
-            font-size: 1.2vw;
-            color: #ccc;
-            line-height: 1.1; 
-            white-space: normal;
-            text-align: left;
+        .modal {
+            background: #111;
+            padding: 30px;
+            border-radius: 20px;
+            border: 2px solid #4facfe;
+            text-align: center;
+            width: 350px;
         }
 
-        .news-scroll-area::-webkit-scrollbar { width: 6px; }
-        .news-scroll-area::-webkit-scrollbar-track { background: transparent; }
-        .news-scroll-area::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
-        .news-scroll-area::-webkit-scrollbar-thumb:hover { background: #4facfe; }
+        .modal-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+        .m-btn { padding: 12px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        .play-btn { background: #4facfe; color: #000; }
+        .reroll-btn { background: #7928ca; color: white; }
+        .close-btn { background: #333; color: white; }
 
-        .nav-btn:not(.news-btn):hover {
-            filter: brightness(1.2);
-            transform: scale(1.01);
-            z-index: 10;
-        }
-
-        span { filter: drop-shadow(0 0 10px rgba(0,0,0,0.5)); pointer-events: none; padding: 10px; }
-
-        .sub-text {
-            font-size: 1.1vw;
-            font-weight: 600;
-            text-transform: none;
-            display: block;
-            margin-top: 5px;
-            opacity: 0.8;
-        }
+        .form-card { border: 2px dashed #4facfe; }
     </style>
 </head>
 <body>
 
-    <div class="panic-banner">Updates weekly. Use the form for requests so I don't forget!</div>
-
-    <div class="container">
-        <button class="nav-btn games-main-btn" onclick="launch('Grades and Attendance', 'https://games-4cz.pages.dev', 'newhometesting.pages.dev/powerschool.png')">
-            <span>Main Games</span>
-        </button>
-
-        <button class="nav-btn games-req-btn" onclick="launch('Home - Classroom', 'https://requested-games-4jg.pages.dev', 'newhometesting.pages.dev/classroom.png')">
-            <span>Requested Games<br><span class="sub-text">Games In News, Game Websites</span></span>
-        </button>
-
-        <button class="nav-btn proxies-btn" onclick="launch('Home - Lewis Middle', 'https://proxies-6x8.pages.dev', 'newhometesting.pages.dev/lewis.png')">
-            <span>Proxies</span>
-        </button>
-
-        <button class="nav-btn tools-btn" onclick="launch('Home - Google Drive', 'https://movies-tools.pages.dev', 'newhometesting.pages.dev/googledrive.png')">
-            <span>Movies and Tools</span>
-        </button>
-
-        <div class="nav-btn news-btn">
-            <div class="news-header">
-                NEWS (PLEASE USE <a href="https://forms.gle/1PK3AMXTvXjHnrdq8" target="_blank" rel="noopener noreferrer">REQUEST FORM</a>)
-            </div>
-            
-            <div class="news-scroll-area">
-                <div class="news-text">
-                    2/27/26: I added a bunch of stuff!: I added Bloxd.io, and 2 new unblocked games sites<br>
-                    2/18/26: MORE ABOUT THE SCRAMJET: Deployed to render 24/7.<br>
-                    2/10/26: Added Five Nights at Epsteins and Omori.<br>
-                    1/21/26: Added better cloaking functionality.
-                </div>
+    <div id="modalOverlay">
+        <div class="modal">
+            <p>Ready to play?</p>
+            <h2 id="randomGameTitle">Game Name</h2>
+            <div class="modal-buttons">
+                <button class="m-btn play-btn" id="modalPlay">Play Now</button>
+                <button class="m-btn reroll-btn" onclick="pickRandom()">Reroll 🎲</button>
+                <button class="m-btn close-btn" onclick="closeModal()">Close</button>
             </div>
         </div>
     </div>
 
+    <div class="header-nav">
+        <a href="https://newhometesting.pages.dev/" class="back-home-link">← Home</a>
+        <h1 class="main-header">Requested Games</h1>
+        <div style="width: 70px;"></div>
+    </div>
+
+    <div class="search-container">
+        <input type="text" id="gameSearch" placeholder="Search for a game..." onkeyup="filterGames()">
+        <button class="random-btn" onclick="pickRandom()">Random 🎲</button>
+    </div>
+
+    <div class="request-grid" id="gameGrid">
+        <div class="card form-card">
+            <h3>Request a Game</h3>
+            <a href="https://forms.gle/xhWTy62fK1YqxNQA6" target="_blank" class="btn">Open Form</a>
+        </div> 
+
+        <div class="card" data-name="Bloxd.io" data-url="https://geometry.com.de/">
+            <h3>Bloxd.io</h3>
+            <button class="btn" onclick="launch('Bloxd.io', 'https://geometry.com.de/')">Play Now</button>
+        </div>
+
+        <div class="card" data-name="Geometry Dash Lite" data-url="https://gdl-7qv.pages.dev">
+            <h3>Geometry Dash Lite</h3>
+            <button class="btn" onclick="launch('Geometry Dash Lite', 'https://gdl-7qv.pages.dev')">Play Now</button>
+        </div>
+
+        <div class="card" data-name="UBG 1" data-url="https://ubg01.gitlab.io/">
+            <h3>UBG 1</h3>
+            <button class="btn" onclick="launch('UBG 1', 'https://ubg01.gitlab.io/')">Play Now</button>
+        </div>
+
+        <div class="card" data-name="Five Nights at Epstein's" data-url="https://fivenightsatepsteins-9i9.pages.dev">
+            <h3>Five Nights at Epstein's</h3>
+            <button class="btn" onclick="launch('Five Nights at Epstein\'s', 'https://fivenightsatepsteins-9i9.pages.dev')">Play Now</button>
+        </div>
+
+        <div class="card" data-name="Ultimate Emulator" data-url="https://archive.org/details/consolelivingroom">
+            <h3>Ultimate Emulator</h3>
+            <button class="btn" onclick="launch('Ultimate Emulator', 'https://archive.org/details/consolelivingroom')">Play Now</button>
+        </div>
+
+        <div class="card" data-name="Ultrakill" data-url="https://ultrakill.pages.dev">
+            <h3>Ultrakill</h3>
+            <button class="btn" onclick="launch('Ultrakill', 'https://ultrakill.pages.dev')">Play Now</button>
+        </div>
+
+        <div class="card" data-name="Mindustry" data-url="https://mindustryclassicmirror.pages.dev">
+            <h3>Mindustry</h3>
+            <button class="btn" onclick="launch('Mindustry', 'https://mindustryclassicmirror.pages.dev')">Play Now</button>
+        </div>
+
+        <div class="card" data-name="Drive Mad" data-url="https://drive-mad-327.pages.dev">
+            <h3>Drive Mad</h3>
+            <button class="btn" onclick="launch('Drive Mad', 'https://drive-mad-327.pages.dev')">Play Now</button>
+        </div>
+
+        <div class="card" data-name="N-Gon" data-url="https://n-gon-b1e.pages.dev">
+            <h3>N-Gon</h3>
+            <button class="btn" onclick="launch('N-Gon', 'https://n-gon-b1e.pages.dev')">Play Now</button>
+        </div>
+
+        <div class="card" data-name="Gn-Math" data-url="https://gn-math-5pb.pages.dev">
+            <h3>Gn-Math</h3>
+            <button class="btn" onclick="launch('Gn-math', 'https://gn-math-5pb.pages.dev')">Play Now</button>
+        </div>
+
+        <div class="card" data-name="Buckshot Roulette" data-url="https://buckshot-roulette-7pp.pages.dev">
+            <h3>Buckshot Roulette</h3>
+            <button class="btn" onclick="launch('Buckshot Roulette', 'https://buckshot-roulette-7pp.pages.dev')">Play Now</button>
+        </div>
+    </div>
+
     <script>
-        function launch(disguiseTitle, url, favicon) {
+        function filterGames() {
+            let input = document.getElementById('gameSearch').value.toLowerCase();
+            let cards = document.querySelectorAll('.card:not(.form-card)');
+            cards.forEach(card => {
+                let title = card.querySelector('h3').innerText.toLowerCase();
+                card.classList.toggle('hidden', !title.includes(input));
+            });
+        }
+
+        let selectedRandom = { name: "", url: "" };
+
+        function pickRandom() {
+            const cards = document.querySelectorAll('.card:not(.form-card)');
+            const randomCard = cards[Math.floor(Math.random() * cards.length)];
+            selectedRandom.name = randomCard.getAttribute('data-name');
+            selectedRandom.url = randomCard.getAttribute('data-url');
+            document.getElementById('randomGameTitle').innerText = selectedRandom.name;
+            document.getElementById('modalOverlay').style.display = 'flex';
+            document.getElementById('modalPlay').onclick = function() {
+                launch(selectedRandom.name, selectedRandom.url);
+                closeModal();
+            };
+        }
+
+        function closeModal() { document.getElementById('modalOverlay').style.display = 'none'; }
+
+        function launch(name, url) {
             const content = `
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <title>${disguiseTitle}</title>
-                    <link rel="icon" type="image/png" href="${favicon}">
+                    <title>${name}</title>
+                    <link rel="icon" href="https://ssl.gstatic.com/docs/doclist/images/infinite_growth_customer_emails.png">
                     <style>
                         body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
                         iframe { border: none; width: 100%; height: 100%; }
-                        
-                        /* Floating Back Button */
                         .back-btn {
-                            position: fixed;
-                            bottom: 20px;
-                            right: 20px;
-                            padding: 10px 20px;
-                            background: rgba(0, 0, 0, 0.6);
-                            color: white;
-                            border: 1px solid rgba(255, 255, 255, 0.3);
-                            border-radius: 30px;
-                            cursor: pointer;
-                            z-index: 99999;
-                            font-weight: bold;
-                            text-decoration: none;
-                            transition: background 0.3s, transform 0.2s;
-                            backdrop-filter: blur(5px);
-                            font-size: 14px;
+                            position: fixed; top: 15px; left: 15px;
+                            padding: 8px 16px; background: rgba(0, 0, 0, 0.5);
+                            color: white; border: 1px solid rgba(255, 255, 255, 0.2);
+                            border-radius: 20px; cursor: pointer; z-index: 99999;
+                            font-weight: bold; text-decoration: none; backdrop-filter: blur(4px);
+                            font-size: 13px; transition: 0.2s;
                         }
-                        .back-btn:hover {
-                            background: rgba(255, 255, 255, 0.2);
-                            transform: scale(1.05);
-                        }
+                        .back-btn:hover { background: rgba(255, 255, 255, 0.2); }
                     </style>
                 </head>
                 <body>
-                    <a href="https://newhometesting.pages.dev/" class="back-btn">← Back to Home</a>
+                    <a href="https://requested-games-4jg.pages.dev" class="back-btn">← </a>
                     <iframe src="${url}"></iframe>
                     <script>
                         window.addEventListener('keydown', function(e) {
-                            if (e.key.toLowerCase() === 'q') {
-                                window.location.replace('https://classroom.google.com');
-                            }
+                            if (e.key.toLowerCase() === 'q') window.location.replace('https://classroom.google.com');
                         });
                     <\/script>
                 </body>
                 </html>`;
-
             document.open();
             document.write(content);
             document.close();
         }
 
         window.addEventListener('keydown', function(e) {
-            if (e.key.toLowerCase() === 'q') {
-                window.location.href = 'https://classroom.google.com';
-            }
+            if (e.key.toLowerCase() === 'q') window.location.href = 'https://classroom.google.com';
         });
     </script>
 </body>
